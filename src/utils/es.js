@@ -9,7 +9,6 @@ import { MAPPINGS } from './es-config';
 
 const ES_METADATA_INDEX = config.get('elasticsearchConfig.metadataIndexName');
 const ES_METADATA_TYPE = config.get('elasticsearchConfig.metadataDocType');
-const ES_METADATA_DEFAULT_ID = config.get('elasticsearchConfig.metadataDocDefaultId');
 
 const eClient = util.getElasticSearchClient();
 
@@ -53,9 +52,7 @@ const modelConfigs = {
  */
 async function indexMetadata() {
   const modelNames = _.keys(modelConfigs);
-  const body = {
-    id: ES_METADATA_DEFAULT_ID,
-  };
+  const body = {};
 
   for (let i = 0; i < modelNames.length; i += 1) {
     const modelName = modelNames[i];
@@ -70,7 +67,6 @@ async function indexMetadata() {
   return eClient.index({
     index: ES_METADATA_INDEX,
     type: ES_METADATA_TYPE,
-    id: ES_METADATA_DEFAULT_ID,
     body,
     refresh: 'wait_for',
   });
